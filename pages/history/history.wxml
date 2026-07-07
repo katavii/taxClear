@@ -1,17 +1,61 @@
 <view class="container tab-page">
   <view class="page-title">历史计算记录</view>
+  <view class="page-subtitle" wx:if="{{historyList.length > 0}}">共 {{historyList.length}} 条记录</view>
 
   <van-empty wx:if="{{historyList.length === 0}}" description="暂无历史记录" />
 
-  <view class="card history-item" wx:for="{{historyList}}" wx:key="id">
-    <view class="history-header">
-      <van-tag type="primary">{{item.typeName}}</van-tag>
-      <text class="history-time">{{item.createTime}}</text>
-    </view>
-    <view class="history-action">
-      <van-button size="small" type="danger" plain data-id="{{item.id}}" bind:click="onDelete">删除</van-button>
+  <view
+    class="history-card"
+    wx:for="{{historyList}}"
+    wx:key="id"
+    data-id="{{item.id}}"
+    bindtap="onViewDetail"
+    hover-class="history-card--pressed"
+  >
+    <view class="history-card__accent" style="background-color: {{item.typeColor}}"></view>
+
+    <view class="history-card__body">
+      <view class="history-card__top">
+        <view class="history-card__type">
+          <view class="history-card__icon-wrap" style="background-color: {{item.typeBg}}">
+            <van-icon name="{{item.typeIcon}}" size="36rpx" color="{{item.typeColor}}" />
+          </view>
+          <view class="history-card__type-text">
+            <text class="history-card__type-name">{{item.typeName}}</text>
+            <text class="history-card__time">{{item.displayTime}}</text>
+          </view>
+        </view>
+        <view
+          class="history-card__delete"
+          data-id="{{item.id}}"
+          catch:tap="onDelete"
+          hover-class="history-card__delete--pressed"
+        >
+          <van-icon name="delete-o" size="36rpx" color="#94A3B8" />
+        </view>
+      </view>
+
+      <view class="history-card__result" wx:if="{{item.resultValue}}">
+        <text class="history-card__result-label">{{item.resultLabel}}</text>
+        <text class="history-card__result-value history-card__result-value--{{item.resultTone}}">{{item.resultValue}}</text>
+      </view>
+
+      <view class="history-card__footer">
+        <text class="history-card__footer-hint">查看详情</text>
+        <van-icon name="arrow" size="28rpx" color="#94A3B8" />
+      </view>
     </view>
   </view>
 
-  <van-button wx:if="{{historyList.length > 0}}" plain block round type="danger" bind:click="onClearAll">清空全部记录</van-button>
+  <van-button
+    wx:if="{{historyList.length > 0}}"
+    plain
+    block
+    round
+    type="danger"
+    custom-class="history-clear-btn"
+    bind:click="onClearAll"
+  >
+    清空全部记录
+  </van-button>
 </view>

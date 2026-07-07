@@ -142,22 +142,16 @@ Page({
   },
 
   openInsureModal() {
-    const housingFundPercent = Math.round(INSURE_RATES.housingFundDefault * 100)
-    const { monthlySalary } = this.data
-    const patch = {
-      showInsureModal: true,
-      housingFundPercent,
-    }
-    if (monthlySalary !== '' && monthlySalary != null) {
-      patch.insureBase = String(monthlySalary)
-    } else if (this.data.calcMode === 'yearly' && this.data.yearSalary) {
-      const annual = validate.parseAmount(this.data.yearSalary)
-      if (annual > 0) patch.insureBase = String(taxFormula.toFixed2(annual / 12))
-    }
-    this.setData(patch, () => {
-      syncTabBarModal(this)
-      this.updateInsureDetail()
-    })
+    this.setData(
+      {
+        showInsureModal: true,
+        housingFundPercent: Math.round(INSURE_RATES.housingFundDefault * 100),
+      },
+      () => {
+        syncTabBarModal(this)
+        this.updateInsureDetail()
+      }
+    )
   },
 
   closeInsureModal() {

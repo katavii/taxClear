@@ -1,8 +1,8 @@
 <view class="container">
   <view class="page-title">全年一次性奖金（年终奖）</view>
 
-  <view class="card">
-    <van-cell-group>
+  <view class="card card--flat">
+    <van-cell-group border="{{false}}">
       <van-field
         label="年终奖金额"
         type="digit"
@@ -10,6 +10,7 @@
         value="{{bonusAmount}}"
         data-field="bonusAmount"
         bind:change="onInput"
+        title-width="7.5em"
       />
       <van-field
         label="全年工资总收入"
@@ -18,6 +19,7 @@
         value="{{yearTotalIncome}}"
         data-field="yearTotalIncome"
         bind:change="onInput"
+        title-width="7.5em"
       />
       <van-field
         label="全年扣除总额"
@@ -26,6 +28,8 @@
         value="{{yearAllDeduct}}"
         data-field="yearAllDeduct"
         bind:change="onInput"
+        title-width="7.5em"
+        border="{{false}}"
       />
     </van-cell-group>
   </view>

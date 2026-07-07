@@ -1,0 +1,170 @@
+<view class="container" wx:if="{{record && result}}">
+  <view class="detail-meta">
+    <van-tag type="primary">{{record.typeName}}</van-tag>
+    <text class="detail-time">{{displayTime}}</text>
+  </view>
+
+  <view class="card result-card">
+  <!-- 月度工资个税 -->
+  <block wx:if="{{record.type === 'salary'}}">
+    <view class="result-hero">
+      <text class="result-hero-label">税后到手工资</text>
+      <text class="result-hero-value">¥{{result.afterTaxSalary}}</text>
+    </view>
+    <view class="result-title">计算明细</view>
+    <view class="result-row">
+      <text>本月应缴个税</text>
+      <text class="result-value">¥{{result.currentMonthTax}}</text>
+    </view>
+    <view class="result-row" wx:if="{{result.autoPaidTax}}">
+      <text>累计已缴税额</text>
+      <text class="result-value">¥{{result.totalPaidTax}}（自动推算）</text>
+    </view>
+    <view class="result-row">
+      <text>专项附加扣除(月)</text>
+      <text class="result-value">¥{{result.monthlySpecialAdd}}</text>
+    </view>
+    <view class="result-row">
+      <text>累计应纳税所得额</text>
+      <text class="result-value">¥{{result.taxableIncome}}</text>
+    </view>
+    <view class="result-row">
+      <text>适用税率档位</text>
+      <text class="result-value">{{result.taxLevel || result.tip}}</text>
+    </view>
+  </block>
+
+  <!-- 全年个税 -->
+  <block wx:elif="{{record.type === 'yearly'}}">
+    <view class="result-hero">
+      <text class="result-hero-label">税后到手收入</text>
+      <text class="result-hero-value">¥{{result.afterTaxIncome}}</text>
+    </view>
+
+    <view class="result-block">
+      <view class="result-block-title">收入明细</view>
+      <view class="result-row result-row--in-block">
+        <text>全年税前收入</text>
+        <text class="result-value">¥{{result.totalIncome}}</text>
+      </view>
+    </view>
+
+    <view class="result-block result-block--deduct">
+      <view class="result-block-title">扣除明细</view>
+      <view class="result-row-group result-row-group--deduct">
+        <view class="result-row result-row--inner">
+          <text>基本减除费用</text>
+          <text class="result-value">-¥{{result.baseDeduction}}</text>
+        </view>
+        <text class="result-hint">5000元/月 × 12个月</text>
+      </view>
+      <view class="result-row result-row--in-block result-row--deduct">
+        <text>五险一金扣除</text>
+        <text class="result-value">-¥{{result.yearInsure}}</text>
+      </view>
+      <view class="result-row result-row--in-block result-row--deduct">
+        <text>专项扣除</text>
+        <text class="result-value">-¥{{result.yearSpecialAdd}}</text>
+      </view>
+      <view class="result-row result-row--in-block result-row--deduct" wx:if="{{result.yearOtherDeduct > 0}}">
+        <text>其他税前扣除</text>
+        <text class="result-value">-¥{{result.yearOtherDeduct}}</text>
+      </view>
+    </view>
+
+    <view class="result-block result-block--summary">
+      <view class="result-block-title">税额测算</view>
+      <view class="result-row result-row--in-block">
+        <text>应纳税所得额</text>
+        <text class="result-value">¥{{result.taxableIncome}}</text>
+      </view>
+      <view class="result-row result-row--in-block result-row--highlight">
+        <text>全年应缴个人所得税</text>
+        <text class="result-value highlight">¥{{result.totalTax}}</text>
+      </view>
+      <view class="result-row result-row--in-block">
+        <text>综合税率</text>
+        <text class="result-value">{{result.marginalRateText}}</text>
+      </view>
+      <view class="result-row result-row--in-block">
+        <text>实际税率</text>
+        <text class="result-value">{{result.effectiveRateText}}</text>
+      </view>
+      <view class="result-row result-row--in-block result-row--final">
+        <text>税后到手收入</text>
+        <text class="result-value">¥{{result.afterTaxIncome}}</text>
+      </view>
+    </view>
+
+    <view class="result-block result-block--bonus" wx:if="{{result.bonusAmount > 0}}">
+      <view class="result-block-title">年终奖计税方案</view>
+      <view class="result-row result-row--in-block">
+        <text>推荐方式</text>
+        <text class="result-value">{{result.bestMode}}</text>
+      </view>
+      <view class="result-row result-row--in-block">
+        <text>单独计税（工资税+奖金税）</text>
+        <text class="result-value">¥{{result.separateTotalTax}}</text>
+      </view>
+      <view class="result-row result-row--in-block">
+        <text>年终奖单独税额</text>
+        <text class="result-value">¥{{result.bonusSingleTax}}</text>
+      </view>
+      <view class="result-row result-row--in-block">
+        <text>并入综合所得（全年总税）</text>
+        <text class="result-value">¥{{result.mergeTotalTax}}</text>
+      </view>
+    </view>
+  </block>
+
+  <!-- 年终奖个税 -->
+  <block wx:elif="{{record.type === 'bonus'}}">
+    <view class="result-title">双方案对比</view>
+    <view class="result-row">
+      <text>单独计税</text>
+      <text class="result-value">¥{{result.singleTax}}</text>
+    </view>
+    <view class="result-row">
+      <text>并入综合所得</text>
+      <text class="result-value">¥{{result.mergeTax}}</text>
+    </view>
+    <van-tag type="primary" size="large">{{result.bestMode}}</van-tag>
+  </block>
+
+  <!-- 年度汇算清缴 -->
+  <block wx:elif="{{record.type === 'annual'}}">
+    <view class="result-hero">
+      <text class="result-hero-label">{{result.resultType}}金额</text>
+      <text class="result-hero-value result-hero-value--{{result.resultType === '补税' ? 'warn' : 'success'}}">¥{{result.amount}}</text>
+    </view>
+    <view class="result-title">汇算明细</view>
+    <view class="result-row">
+      <text>年度应纳税额</text>
+      <text class="result-value">¥{{result.finalTax}}</text>
+    </view>
+    <view class="result-row">
+      <text>结果类型</text>
+      <text class="result-value">{{result.resultType}}</text>
+    </view>
+  </block>
+
+  <!-- 劳务报酬个税 -->
+  <block wx:elif="{{record.type === 'labor'}}">
+    <view class="result-title">计算结果</view>
+    <view class="result-row">
+      <text>应纳税所得额</text>
+      <text>¥{{result.taxableIncome}}</text>
+    </view>
+    <view class="result-row">
+      <text>应预扣预缴税额</text>
+      <text class="result-value">¥{{result.tax}}</text>
+    </view>
+    <view class="result-row">
+      <text>税后收入</text>
+      <text class="result-value highlight">¥{{result.afterTax}}</text>
+    </view>
+  </block>
+  </view>
+
+  <view class="disclaimer">测算结果仅供参考，最终数据以国家税务总局官方系统为准</view>
+</view>

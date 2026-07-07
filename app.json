@@ -5,6 +5,7 @@
     "pages/annual/annual",
     "pages/labor/labor",
     "pages/history/history",
+    "pages/history/detail",
     "pages/help/help",
     "pages/mine/mine"
   ],
