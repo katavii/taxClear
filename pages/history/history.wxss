@@ -1,0 +1,20 @@
+.history-item {
+  margin-bottom: 16rpx;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.history-time {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+.history-action {
+  display: flex;
+  justify-content: flex-end;
+}

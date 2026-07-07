@@ -1,0 +1,25 @@
+.reset-btn {
+  margin-top: 16rpx !important;
+}
+
+.result-card {
+  margin-top: 32rpx;
+}
+
+.result-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1677ff;
+  margin-bottom: 24rpx;
+}
+
+.result-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.result-value {
+  font-weight: 600;
+}

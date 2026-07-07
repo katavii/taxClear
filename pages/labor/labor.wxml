@@ -1,0 +1,36 @@
+<view class="container">
+  <view class="page-title">劳务报酬所得</view>
+
+  <view class="card">
+    <van-cell-group>
+      <van-field
+        label="劳务报酬收入"
+        type="digit"
+        placeholder="单次收入金额"
+        value="{{laborIncome}}"
+        bind:change="onInput"
+      />
+    </van-cell-group>
+  </view>
+
+  <van-button type="primary" block round bind:click="onCalc">立即计算</van-button>
+  <van-button plain block round custom-class="reset-btn" bind:click="onReset">重置</van-button>
+
+  <view class="card result-card" wx:if="{{showResult && result}}">
+    <view class="result-title">计算结果</view>
+    <view class="result-row">
+      <text>应纳税所得额</text>
+      <text>¥{{result.taxableIncome}}</text>
+    </view>
+    <view class="result-row">
+      <text>应预扣预缴税额</text>
+      <text class="result-value">¥{{result.tax}}</text>
+    </view>
+    <view class="result-row">
+      <text>税后收入</text>
+      <text class="result-value highlight">¥{{result.afterTax}}</text>
+    </view>
+  </view>
+
+  <view class="disclaimer">测算结果仅供参考，最终数据以国家税务总局官方系统为准</view>
+</view>

@@ -1,0 +1,18 @@
+<view class="immersive-header">
+  <view class="immersive-header__safe" style="height: {{statusBarHeight}}px" />
+  <view
+    class="immersive-header__bar"
+    style="height: {{navBarHeight}}px; padding-right: {{navPaddingRight}}px"
+  >
+    <view
+      wx:if="{{showBack}}"
+      class="immersive-header__back"
+      hover-class="immersive-header__back--pressed"
+      bindtap="onBack"
+    >
+      <van-icon name="arrow-left" size="18px" color="#ffffff" />
+    </view>
+    <text class="immersive-header__title">{{title}}</text>
+  </view>
+  <view class="immersive-header__sub" wx:if="{{subtitle}}">{{subtitle}}</view>
+</view>

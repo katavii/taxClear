@@ -1,0 +1,49 @@
+.immersive-header {
+  margin: 0 calc(var(--spacing-lg) * -1) var(--spacing-sm);
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+.immersive-header__safe,
+.immersive-header__bar {
+  box-sizing: border-box;
+}
+
+.immersive-header__bar {
+  display: flex;
+  align-items: center;
+  padding-left: var(--spacing-lg);
+}
+
+.immersive-header__back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56rpx;
+  height: 56rpx;
+  margin-right: 4rpx;
+  margin-left: -8rpx;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.immersive-header__back--pressed {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.immersive-header__title {
+  flex: 1;
+  font-size: 32rpx;
+  font-weight: 600;
+  letter-spacing: 0.5rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.immersive-header__sub {
+  padding: 0 var(--spacing-lg) 20rpx;
+  font-size: 22rpx;
+  opacity: 0.85;
+  line-height: 1.4;
+}

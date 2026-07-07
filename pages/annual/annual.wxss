@@ -1,0 +1,15 @@
+.card-section {
+  padding: var(--spacing-lg) var(--spacing-lg) 0;
+}
+
+.result-hero-value--success {
+  color: var(--color-success) !important;
+}
+
+.result-hero-value--warn {
+  color: #d97706 !important;
+}
+
+.card--flat .field-row:last-of-type {
+  border-bottom: none;
+}

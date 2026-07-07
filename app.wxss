@@ -1,0 +1,60 @@
+@import './styles/common.wxss';
+
+page {
+  background-color: var(--color-bg);
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-size: 28rpx;
+  color: var(--color-text);
+  box-sizing: border-box;
+}
+
+.container,
+.page {
+  padding: var(--spacing-md) var(--spacing-lg);
+  padding-bottom: calc(var(--spacing-lg) + env(safe-area-inset-bottom));
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.tab-page {
+  padding-bottom: calc(120rpx + env(safe-area-inset-bottom));
+}
+
+.page {
+  padding-top: 0;
+  background: var(--color-bg);
+}
+
+.page-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-md);
+  letter-spacing: 0.5rpx;
+}
+
+.disclaimer {
+  font-size: 22rpx;
+  color: var(--color-text-muted);
+  line-height: 1.7;
+  padding: var(--spacing-md) 0;
+  text-align: center;
+}
+
+.card {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+  border: 1rpx solid var(--color-border-light);
+  overflow: hidden;
+}
+
+.card--flat {
+  padding: 0;
+}
+
+.card--flat .van-cell-group {
+  background: transparent;
+}

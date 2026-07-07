@@ -1,0 +1,17 @@
+<view class="container tab-page">
+  <view class="page-title">历史计算记录</view>
+
+  <van-empty wx:if="{{historyList.length === 0}}" description="暂无历史记录" />
+
+  <view class="card history-item" wx:for="{{historyList}}" wx:key="id">
+    <view class="history-header">
+      <van-tag type="primary">{{item.typeName}}</van-tag>
+      <text class="history-time">{{item.createTime}}</text>
+    </view>
+    <view class="history-action">
+      <van-button size="small" type="danger" plain data-id="{{item.id}}" bind:click="onDelete">删除</van-button>
+    </view>
+  </view>
+
+  <van-button wx:if="{{historyList.length > 0}}" plain block round type="danger" bind:click="onClearAll">清空全部记录</van-button>
+</view>

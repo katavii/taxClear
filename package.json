@@ -1,0 +1,15 @@
+{
+  "name": "geshui",
+  "version": "1.0.0",
+  "description": "个税速算计算器 - 微信小程序",
+  "scripts": {
+    "build:npm": "mkdir -p miniprogram_npm/@vant/weapp && cp -R node_modules/@vant/weapp/lib/. miniprogram_npm/@vant/weapp/",
+    "postinstall": "npm run build:npm",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@vant/weapp": "^1.11.7"
+  },
+  "author": "",
+  "license": "ISC"
+}

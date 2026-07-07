@@ -1,0 +1,253 @@
+<page-meta page-style="{{ showInsureModal || showSpecialModal ? 'overflow: hidden; height: 100%;' : '' }}" />
+<view class="page">
+  <immersive-header
+    title="年度综合所得汇算"
+    subtitle="次年 3-6 月 · 多退少补测算"
+    show-back="{{true}}"
+  />
+
+  <view class="card card--flat">
+    <view class="card-section">
+      <view class="card-header">
+        <view class="card-header-main">
+          <view class="card-header-icon-wrap">
+            <van-icon name="chart-trending-o" size="32rpx" color="#2563EB" />
+          </view>
+          <text class="card-header-title">汇算参数</text>
+        </view>
+      </view>
+    </view>
+    <van-cell-group border="{{false}}">
+      <van-field
+        label="全年综合所得"
+        type="digit"
+        placeholder="工资+劳务+稿酬等"
+        value="{{yearAllIncome}}"
+        data-field="yearAllIncome"
+        bind:change="onInput"
+        title-width="7.5em"
+      />
+      <view class="field-row" hover-class="field-row--pressed" bindtap="openInsureModal">
+        <view class="field-row-left">
+          <text class="field-row-label">五险一金(个人/年)</text>
+          <text class="field-row-value {{annualInsureTotal ? '' : 'is-placeholder'}}">{{annualInsureTotal ? '¥' + annualInsureTotal : '点击快速计算'}}</text>
+        </view>
+        <view class="quick-btn" hover-class="quick-btn--pressed" catchtap="openInsureModal">
+          <van-icon name="records-o" size="28rpx" color="#2563EB" />
+          <text>快速计算</text>
+        </view>
+      </view>
+      <view class="field-row" hover-class="field-row--pressed" bindtap="openSpecialModal">
+        <view class="field-row-left">
+          <text class="field-row-label">专项附加扣除</text>
+          <text class="field-row-value {{deductSummary === '未设置' ? 'is-placeholder' : ''}}">{{deductSummary}}</text>
+        </view>
+        <view class="quick-btn" hover-class="quick-btn--pressed" catchtap="openSpecialModal">
+          <van-icon name="records-o" size="28rpx" color="#2563EB" />
+          <text>快速计算</text>
+        </view>
+      </view>
+      <van-field
+        label="全年扣除总额"
+        type="digit"
+        placeholder="自动汇总或手动输入"
+        value="{{yearAllDeduct}}"
+        data-field="yearAllDeduct"
+        bind:change="onInput"
+        title-width="7.5em"
+      />
+      <van-field
+        label="全年已预缴个税"
+        type="digit"
+        placeholder="请输入"
+        value="{{yearAllPaidTax}}"
+        data-field="yearAllPaidTax"
+        bind:change="onInput"
+        title-width="7.5em"
+      />
+    </van-cell-group>
+  </view>
+
+  <view class="btn-group">
+    <van-button type="primary" block round custom-class="btn-primary" bind:click="onCalc">立即计算</van-button>
+    <van-button plain block round custom-class="reset-btn" bind:click="onReset">重置</van-button>
+  </view>
+
+  <view class="card result-card" wx:if="{{showResult && result}}">
+    <view class="result-hero">
+      <text class="result-hero-label">{{result.resultType}}金额</text>
+      <text class="result-hero-value result-hero-value--{{result.resultType === '补税' ? 'warn' : 'success'}}">¥{{result.amount}}</text>
+    </view>
+    <view class="result-title">汇算明细</view>
+    <view class="result-row">
+      <text>年度应纳税额</text>
+      <text class="result-value">¥{{result.finalTax}}</text>
+    </view>
+    <view class="result-row">
+      <text>结果类型</text>
+      <text class="result-value">{{result.resultType}}</text>
+    </view>
+  </view>
+
+  <view class="disclaimer">测算结果仅供参考，最终数据以国家税务总局官方系统为准</view>
+</view>
+
+<!-- 五险一金快速计算 -->
+<van-popup
+  show="{{showInsureModal}}"
+  position="bottom"
+  round
+  closeable
+  lock-scroll
+  z-index="10050"
+  bind:close="closeInsureModal"
+>
+  <view class="modal-sheet">
+    <view class="modal-handle" />
+    <view class="modal-title">五险一金快速计算</view>
+    <view class="modal-desc">输入月缴费基数与各险种比例，自动计算年缴总额</view>
+
+    <scroll-view scroll-y enhanced="{{true}}" show-scrollbar="{{true}}" enable-flex class="modal-scroll">
+      <view class="modal-scroll-body">
+      <view class="modal-field">
+        <view class="modal-label">社保缴费基数（月）</view>
+        <van-field type="digit" placeholder="¥ 0 /月" value="{{insureBase}}" bind:change="onInsureBaseInput" border="{{false}}" custom-class="modal-input" />
+      </view>
+
+      <view class="insure-item">
+        <view class="insure-item-head">
+          <view class="insure-item-title">
+            <text class="insure-name">养老保险</text>
+            <text class="insure-tag">已固定</text>
+          </view>
+          <text class="insure-rate">个人 8%</text>
+        </view>
+        <text class="insure-amount">¥ {{insureDetail.pension}}/月</text>
+      </view>
+      <view class="insure-item">
+        <view class="insure-item-head">
+          <view class="insure-item-title">
+            <text class="insure-name">医疗保险</text>
+            <text class="insure-tag">已固定</text>
+          </view>
+          <text class="insure-rate">个人 2%</text>
+        </view>
+        <text class="insure-amount">¥ {{insureDetail.medical}}/月</text>
+      </view>
+      <view class="insure-item">
+        <view class="insure-item-head">
+          <view class="insure-item-title">
+            <text class="insure-name">失业保险</text>
+            <text class="insure-tag">已固定</text>
+          </view>
+          <text class="insure-rate">个人 0.5%</text>
+        </view>
+        <text class="insure-amount">¥ {{insureDetail.unemployment}}/月</text>
+      </view>
+      <view class="insure-item insure-item--with-slider">
+        <view class="insure-item-head">
+          <text class="insure-name">住房公积金</text>
+          <text class="insure-rate">个人 {{housingFundPercent}}%</text>
+        </view>
+        <van-slider min="5" max="12" step="1" value="{{housingFundPercent}}" active-color="#2563EB" inactive-color="#E2E8F0" bind:change="onHousingFundChange" bind:drag="onHousingFundChange" />
+        <text class="insure-amount">¥ {{insureDetail.housingFund}}/月</text>
+      </view>
+      </view>
+    </scroll-view>
+
+    <view class="modal-total">
+      <text>年缴合计</text>
+      <text class="modal-total-value">¥ {{insureDetail.annualTotal}}/年</text>
+    </view>
+
+    <view class="modal-actions">
+      <van-button type="primary" block round custom-class="btn-primary" bind:click="confirmInsureModal">确认填入</van-button>
+    </view>
+  </view>
+</van-popup>
+
+<!-- 专项附加扣除快速计算 -->
+<van-popup
+  show="{{showSpecialModal}}"
+  position="bottom"
+  round
+  closeable
+  lock-scroll
+  z-index="10050"
+  bind:close="closeSpecialModal"
+>
+  <view class="modal-sheet">
+    <view class="modal-handle" />
+    <view class="modal-title">专项附加扣除快速计算</view>
+    <view class="modal-desc">勾选您符合的项目，自动累加年度扣除额</view>
+
+    <scroll-view scroll-y enhanced="{{true}}" show-scrollbar="{{true}}" enable-flex class="special-scroll">
+      <view class="modal-scroll-body">
+      <view class="special-item">
+        <view class="special-item-info">
+          <text class="special-name">子女教育</text>
+          <text class="special-rule">¥12,000/年·孩</text>
+        </view>
+        <van-stepper value="{{specialDraft.childEduCount}}" min="0" max="10" data-field="childEduCount" bind:change="onSpecialStepper" />
+      </view>
+      <view class="special-item">
+        <view class="special-item-info">
+          <text class="special-name">3岁以下婴幼儿照护</text>
+          <text class="special-rule">¥12,000/年·孩</text>
+        </view>
+        <van-stepper value="{{specialDraft.babyCareCount}}" min="0" max="10" data-field="babyCareCount" bind:change="onSpecialStepper" />
+      </view>
+      <view class="special-item special-item-block">
+        <view class="special-item-info">
+          <text class="special-name">继续教育</text>
+          <text class="special-rule">学历 ¥4,800/年 · 职业资格 ¥3,600/年</text>
+        </view>
+        <view class="option-group">
+          <view wx:for="{{continuingEduOptions}}" wx:key="value" class="option-chip {{specialDraft.continuingEduType === item.value ? 'active' : ''}}" hover-class="option-chip--pressed" data-field="continuingEduType" data-value="{{item.value}}" bindtap="onSpecialOptionTap">{{item.name}}</view>
+        </view>
+      </view>
+      <view class="special-item">
+        <view class="special-item-info">
+          <text class="special-name">住房贷款利息</text>
+          <text class="special-rule">¥12,000/年 · 首套</text>
+        </view>
+        <van-switch checked="{{specialDraft.hasHouseLoan}}" size="24px" active-color="#2563EB" bind:change="onSpecialSwitch" />
+      </view>
+      <view class="special-item special-item-block">
+        <view class="special-item-info">
+          <text class="special-name">住房租金</text>
+          <text class="special-rule">¥9,600~18,000/年 · 分城市等级</text>
+        </view>
+        <view class="option-group">
+          <view wx:for="{{rentOptions}}" wx:key="value" class="option-chip {{specialDraft.rentLevel === item.value ? 'active' : ''}}" hover-class="option-chip--pressed" data-field="rentLevel" data-value="{{item.value}}" bindtap="onSpecialOptionTap">{{item.name}}</view>
+        </view>
+      </view>
+      <view class="special-item special-item-block">
+        <view class="special-item-info">
+          <text class="special-name">赡养老人</text>
+          <text class="special-rule">独生子女 ¥36,000/年 · 非独生子女分摊上限 ¥18,000/年</text>
+        </view>
+        <view class="option-group">
+          <view wx:for="{{elderOptions}}" wx:key="value" class="option-chip {{specialDraft.supportElderType === item.value ? 'active' : ''}}" hover-class="option-chip--pressed" data-field="supportElderType" data-value="{{item.value}}" bindtap="onSpecialOptionTap">{{item.name}}</view>
+        </view>
+      </view>
+      <view class="special-item special-item-block">
+        <view class="special-item-info">
+          <text class="special-name">大病医疗</text>
+          <text class="special-rule">年度自付超1.5万部分，上限 ¥60,000/年</text>
+        </view>
+        <van-field type="digit" placeholder="¥ 金额" value="{{seriousIllnessDraft}}" bind:change="onSeriousIllnessDraftInput" border="{{false}}" custom-class="illness-input" />
+      </view>
+      </view>
+    </scroll-view>
+
+    <view class="modal-total special-total">
+      <text>年度专项附加扣除合计</text>
+      <text class="modal-total-value">¥ {{specialDraftAnnual}}/年</text>
+    </view>
+
+    <view class="modal-actions">
+      <van-button type="primary" block round custom-class="btn-primary" bind:click="confirmSpecialModal">确认填入</van-button>
+    </view>
+  </view>
+</van-popup>

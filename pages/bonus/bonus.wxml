@@ -1,0 +1,50 @@
+<view class="container">
+  <view class="page-title">全年一次性奖金（年终奖）</view>
+
+  <view class="card">
+    <van-cell-group>
+      <van-field
+        label="年终奖金额"
+        type="digit"
+        placeholder="请输入"
+        value="{{bonusAmount}}"
+        data-field="bonusAmount"
+        bind:change="onInput"
+      />
+      <van-field
+        label="全年工资总收入"
+        type="digit"
+        placeholder="不含年终奖"
+        value="{{yearTotalIncome}}"
+        data-field="yearTotalIncome"
+        bind:change="onInput"
+      />
+      <van-field
+        label="全年扣除总额"
+        type="digit"
+        placeholder="五险一金+专项附加等"
+        value="{{yearAllDeduct}}"
+        data-field="yearAllDeduct"
+        bind:change="onInput"
+      />
+    </van-cell-group>
+  </view>
+
+  <van-button type="primary" block round bind:click="onCalc">立即计算</van-button>
+  <van-button plain block round custom-class="reset-btn" bind:click="onReset">重置</van-button>
+
+  <view class="card result-card" wx:if="{{showResult && result}}">
+    <view class="result-title">双方案对比</view>
+    <view class="result-row">
+      <text>单独计税</text>
+      <text class="result-value">¥{{result.singleTax}}</text>
+    </view>
+    <view class="result-row">
+      <text>并入综合所得</text>
+      <text class="result-value">¥{{result.mergeTax}}</text>
+    </view>
+    <van-tag type="primary" size="large">{{result.bestMode}}</van-tag>
+  </view>
+
+  <view class="disclaimer">测算结果仅供参考，最终数据以国家税务总局官方系统为准</view>
+</view>
