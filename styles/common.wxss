@@ -547,3 +547,48 @@ page {
   border-radius: var(--radius-md) !important;
   border: 1rpx solid var(--color-border) !important;
 }
+
+.special-custom-panel {
+  margin-top: 16rpx;
+}
+
+.special-custom-input-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 72rpx;
+  padding: 0 20rpx;
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  border: 1rpx solid var(--color-border);
+  box-sizing: border-box;
+}
+
+.special-custom-prefix {
+  flex-shrink: 0;
+  font-size: 30rpx;
+  color: var(--color-text);
+  font-weight: 600;
+  font-family: var(--font-tabular);
+  margin-right: 8rpx;
+}
+
+.special-custom-field-wrap {
+  flex: 1;
+  min-width: 0;
+}
+
+.special-custom-suffix {
+  flex-shrink: 0;
+  font-size: 26rpx;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  margin-left: 8rpx;
+  white-space: nowrap;
+}
+
+.special-custom-field {
+  width: 100% !important;
+  background: transparent !important;
+  padding: 0 !important;
+}
