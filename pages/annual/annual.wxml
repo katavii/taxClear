@@ -216,19 +216,37 @@
       <view class="special-item special-item-block">
         <view class="special-item-info">
           <text class="special-name">住房租金</text>
-          <text class="special-rule">¥9,600~18,000/年 · 分城市等级</text>
+          <text class="special-rule">¥9,600~18,000/年 · 分城市等级 · 可自定义（不超上限）</text>
         </view>
         <view class="option-group">
           <view wx:for="{{rentOptions}}" wx:key="value" class="option-chip {{specialDraft.rentLevel === item.value ? 'active' : ''}}" hover-class="option-chip--pressed" data-field="rentLevel" data-value="{{item.value}}" bindtap="onSpecialOptionTap">{{item.name}}</view>
+        </view>
+        <view wx:if="{{specialDraft.rentLevel === 'custom'}}" class="special-custom-panel">
+          <view class="special-custom-input-row">
+            <text class="special-custom-prefix">¥</text>
+            <view class="special-custom-field-wrap">
+              <van-field type="digit" placeholder="最高 {{rentCustomMaxAnnual}}" value="{{specialDraft.rentCustomInput}}" bind:change="onRentCustomInput" border="{{false}}" custom-class="special-custom-field" />
+            </view>
+            <text class="special-custom-suffix">/年</text>
+          </view>
         </view>
       </view>
       <view class="special-item special-item-block">
         <view class="special-item-info">
           <text class="special-name">赡养老人</text>
-          <text class="special-rule">独生子女 ¥36,000/年 · 非独生子女分摊上限 ¥18,000/年</text>
+          <text class="special-rule">独生子女 ¥36,000/年 · 非独生分摊上限 ¥18,000/年 · 可自定义</text>
         </view>
         <view class="option-group">
           <view wx:for="{{elderOptions}}" wx:key="value" class="option-chip {{specialDraft.supportElderType === item.value ? 'active' : ''}}" hover-class="option-chip--pressed" data-field="supportElderType" data-value="{{item.value}}" bindtap="onSpecialOptionTap">{{item.name}}</view>
+        </view>
+        <view wx:if="{{specialDraft.supportElderType === 'custom'}}" class="special-custom-panel">
+          <view class="special-custom-input-row">
+            <text class="special-custom-prefix">¥</text>
+            <view class="special-custom-field-wrap">
+              <van-field type="digit" placeholder="最高 {{elderCustomMaxAnnual}}" value="{{specialDraft.supportElderCustomInput}}" bind:change="onElderCustomInput" border="{{false}}" custom-class="special-custom-field" />
+            </view>
+            <text class="special-custom-suffix">/年</text>
+          </view>
         </view>
       </view>
       <view class="special-item special-item-block">

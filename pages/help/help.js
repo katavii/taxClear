@@ -32,7 +32,7 @@ Page({
       },
       {
         q: '专项附加扣除包括哪些？',
-        a: '常见包括婴幼儿照护、子女教育、继续教育、赡养老人、住房贷款利息、住房租金、大病医疗等。住房贷款利息与住房租金不可同时填报。',
+        a: '常见包括婴幼儿照护、子女教育、继续教育、赡养老人、住房贷款利息、住房租金、大病医疗等。住房贷款利息与住房租金不可同时填报。住房租金、赡养老人支持在法定上限内自定义金额。',
       },
       {
         q: '测算结果是否等于实际纳税？',
@@ -47,7 +47,8 @@ Page({
       { name: '赡养老人（独生子女）', standard: `${SPECIAL_ADD_DEDUCT.supportElderSingle}元/月` },
       { name: '赡养老人（非独生子女）', standard: `合计${SPECIAL_ADD_DEDUCT.supportElderSingle}元/月，单人上限${SPECIAL_ADD_DEDUCT.supportElderLimit}元/月` },
       { name: '住房贷款利息', standard: `${SPECIAL_ADD_DEDUCT.houseLoan}元/月` },
-      { name: '住房租金', standard: `${SPECIAL_ADD_DEDUCT.rentLow}/${SPECIAL_ADD_DEDUCT.rentMid}/${SPECIAL_ADD_DEDUCT.rentHigh}元/月（分城市等级）` },
+      { name: '住房租金', standard: `${SPECIAL_ADD_DEDUCT.rentLow}/${SPECIAL_ADD_DEDUCT.rentMid}/${SPECIAL_ADD_DEDUCT.rentHigh}元/月（分城市等级），可自定义（不超法定上限）` },
+      { name: '赡养老人（自定义）', standard: `可自定义填写，年度上限${SPECIAL_ADD_DEDUCT.supportElderSingle * 12}元` },
       { name: '大病医疗', standard: `年度上限${SPECIAL_ADD_DEDUCT.seriousIllness}元（仅汇算使用）` },
     ],
     activeTab: 0,

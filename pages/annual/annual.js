@@ -12,8 +12,10 @@ Page({
     childEduCount: 0,
     continuingEduType: 'none',
     supportElderType: 'none',
+    supportElderCustomAmount: 0,
     hasHouseLoan: false,
     rentLevel: 'none',
+    rentCustomAmount: 0,
     deductSummary: '未设置',
     result: null,
     showResult: false,
@@ -26,6 +28,8 @@ Page({
     specialDraft: {},
     specialDraftAnnual: 0,
     seriousIllnessDraft: '',
+    rentCustomMaxAnnual: taxFormula.getRentCustomMonthlyLimit() * 12,
+    elderCustomMaxAnnual: taxFormula.getElderCustomMonthlyLimit() * 12,
     continuingEduOptions: [
       { name: '无', value: 'none' },
       { name: '学历继续教育 ¥4,800/年', value: 'degree' },
@@ -36,11 +40,13 @@ Page({
       { name: '低档 ¥9,600/年', value: 'low' },
       { name: '中档 ¥13,200/年', value: 'mid' },
       { name: '高档 ¥18,000/年', value: 'high' },
+      { name: '自定义', value: 'custom' },
     ],
     elderOptions: [
       { name: '无', value: 'none' },
       { name: '独生子女 ¥36,000/年', value: 'single' },
       { name: '非独生子女分摊 ¥18,000/年', value: 'shared' },
+      { name: '自定义', value: 'custom' },
     ],
   },
 
@@ -51,6 +57,29 @@ Page({
   onInput(e) {
     const { field } = e.currentTarget.dataset
     this.setData({ [field]: e.detail })
+  },
+
+  getSpecialConfig() {
+    const {
+      babyCareCount,
+      childEduCount,
+      continuingEduType,
+      supportElderType,
+      supportElderCustomAmount,
+      hasHouseLoan,
+      rentLevel,
+      rentCustomAmount,
+    } = this.data
+    return {
+      babyCareCount,
+      childEduCount,
+      continuingEduType,
+      supportElderType,
+      supportElderCustomAmount,
+      hasHouseLoan,
+      rentLevel,
+      rentCustomAmount,
+    }
   },
 
   getSpecialAnnual(config, seriousIllness = 0) {
@@ -69,25 +98,6 @@ Page({
     const total = taxFormula.toFixed2(annualInsure + specialAnnual)
     const deductSummary = total > 0 ? `¥${total}/年（含五险一金+专项附加）` : '未设置'
     this.setData({ deductSummary })
-  },
-
-  getSpecialConfig() {
-    const {
-      babyCareCount,
-      childEduCount,
-      continuingEduType,
-      supportElderType,
-      hasHouseLoan,
-      rentLevel,
-    } = this.data
-    return {
-      babyCareCount,
-      childEduCount,
-      continuingEduType,
-      supportElderType,
-      hasHouseLoan,
-      rentLevel,
-    }
   },
 
   openInsureModal() {
@@ -134,7 +144,15 @@ Page({
   },
 
   openSpecialModal() {
-    const specialDraft = this.getSpecialConfig()
+    const config = this.getSpecialConfig()
+    const specialDraft = {
+      ...config,
+      rentCustomInput: validate.formatCustomDeductDisplay(config.rentCustomAmount, true),
+      supportElderCustomInput: validate.formatCustomDeductDisplay(
+        config.supportElderCustomAmount,
+        true
+      ),
+    }
     this.setData({
       showSpecialModal: true,
       specialDraft,
@@ -178,6 +196,36 @@ Page({
     this.updateSpecialDraft({ [field]: value })
   },
 
+  onRentCustomInput(e) {
+    const parsed = validate.parseCustomDeductInput(
+      e.detail,
+      true,
+      taxFormula.getRentCustomMonthlyLimit()
+    )
+    this.updateSpecialDraft({
+      rentCustomAmount: parsed.monthly,
+      rentCustomInput: parsed.display,
+    })
+    if (parsed.capped) {
+      wx.showToast({ title: '不得超过法定上限', icon: 'none' })
+    }
+  },
+
+  onElderCustomInput(e) {
+    const parsed = validate.parseCustomDeductInput(
+      e.detail,
+      true,
+      taxFormula.getElderCustomMonthlyLimit()
+    )
+    this.updateSpecialDraft({
+      supportElderCustomAmount: parsed.monthly,
+      supportElderCustomInput: parsed.display,
+    })
+    if (parsed.capped) {
+      wx.showToast({ title: '不得超过法定上限', icon: 'none' })
+    }
+  },
+
   onSeriousIllnessDraftInput(e) {
     this.setData({
       seriousIllnessDraft: e.detail,
@@ -195,8 +243,30 @@ Page({
       wx.showToast({ title: mutex.msg, icon: 'none', duration: 3000 })
       return
     }
+    const customCheck = validate.checkSpecialCustomConfirm(specialDraft)
+    if (!customCheck.pass) {
+      wx.showToast({ title: customCheck.msg, icon: 'none' })
+      return
+    }
+    const {
+      babyCareCount,
+      childEduCount,
+      continuingEduType,
+      supportElderType,
+      supportElderCustomAmount,
+      hasHouseLoan,
+      rentLevel,
+      rentCustomAmount,
+    } = specialDraft
     this.setData({
-      ...specialDraft,
+      babyCareCount,
+      childEduCount,
+      continuingEduType,
+      supportElderType,
+      supportElderCustomAmount,
+      hasHouseLoan,
+      rentLevel,
+      rentCustomAmount,
       seriousIllnessDeduct: seriousIllnessDraft,
       showSpecialModal: false,
     })
@@ -240,8 +310,10 @@ Page({
       childEduCount: 0,
       continuingEduType: 'none',
       supportElderType: 'none',
+      supportElderCustomAmount: 0,
       hasHouseLoan: false,
       rentLevel: 'none',
+      rentCustomAmount: 0,
       annualInsureTotal: 0,
       deductSummary: '未设置',
       insureBase: '',

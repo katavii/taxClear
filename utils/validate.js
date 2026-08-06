@@ -27,9 +27,54 @@ function parseSliderValue(detail) {
   return detail
 }
 
+/**
+ * 自定义专项确认校验（金额内部为每月）
+ */
+function checkSpecialCustomConfirm(draft = {}) {
+  if (draft.rentLevel === 'custom' && !(Number(draft.rentCustomAmount) > 0)) {
+    return { pass: false, msg: '请填写住房租金扣除金额' }
+  }
+  if (draft.supportElderType === 'custom' && !(Number(draft.supportElderCustomAmount) > 0)) {
+    return { pass: false, msg: '请填写赡养老人扣除金额' }
+  }
+  return { pass: true }
+}
+
+/**
+ * 将展示金额转为每月金额，并按月上限截断
+ * @returns {{ monthly: number, display: string, capped: boolean }}
+ */
+function parseCustomDeductInput(displayValue, isYearly, maxMonthly) {
+  const raw = parseAmount(displayValue)
+  let monthly = isYearly ? raw / 12 : raw
+  const max = Number(maxMonthly) > 0 ? Number(maxMonthly) : 0
+  const capped = max > 0 && monthly > max
+  if (capped) monthly = max
+  monthly = Math.round(monthly * 100) / 100
+  let display = ''
+  if (capped) {
+    const displayNum = isYearly ? Math.round(monthly * 12 * 100) / 100 : monthly
+    display = String(displayNum)
+  } else if (displayValue !== '' && displayValue !== undefined && displayValue !== null) {
+    display = String(displayValue)
+  }
+  return { monthly, display, capped }
+}
+
+/** 每月金额 → 输入框展示字符串 */
+function formatCustomDeductDisplay(monthly, isYearly) {
+  const m = parseAmount(monthly)
+  if (m <= 0) return ''
+  const v = isYearly ? Math.round(m * 12 * 100) / 100 : Math.round(m * 100) / 100
+  return String(v)
+}
+
 module.exports = {
   checkDeductMutex,
+  checkSpecialCustomConfirm,
   checkTaxInput,
   parseAmount,
   parseSliderValue,
+  parseCustomDeductInput,
+  formatCustomDeductDisplay,
 }

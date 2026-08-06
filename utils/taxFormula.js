@@ -171,6 +171,22 @@ function calcMonthlyInsureDetail(base, housingFundRate = INSURE_RATES.housingFun
   }
 }
 
+/** 赡养老人自定义月上限（年上限 36000） */
+function getElderCustomMonthlyLimit() {
+  return SPECIAL_ADD_DEDUCT.supportElderSingle
+}
+
+/** 住房租金自定义月上限 */
+function getRentCustomMonthlyLimit() {
+  return SPECIAL_ADD_DEDUCT.rentHigh
+}
+
+function clampMonthlyAmount(amount, max) {
+  const n = getNonNegative(amount)
+  if (!max || max <= 0) return 0
+  return toFixed2(Math.min(n, max))
+}
+
 /**
  * 专项附加扣除快速计算（按月）
  * @param {Object} config 扣除配置
@@ -182,7 +198,9 @@ function calcSpecialAddMonthly(config = {}) {
     continuingEduType = 'none',
     hasHouseLoan = false,
     rentLevel = 'none',
+    rentCustomAmount = 0,
     supportElderType = 'none',
+    supportElderCustomAmount = 0,
   } = config
 
   let monthly = 0
@@ -192,10 +210,16 @@ function calcSpecialAddMonthly(config = {}) {
   if (continuingEduType === 'certificate') monthly += SPECIAL_ADD_DEDUCT.certificateEdu / 12
   if (supportElderType === 'single') monthly += SPECIAL_ADD_DEDUCT.supportElderSingle
   if (supportElderType === 'shared') monthly += SPECIAL_ADD_DEDUCT.supportElderLimit
+  if (supportElderType === 'custom') {
+    monthly += clampMonthlyAmount(supportElderCustomAmount, getElderCustomMonthlyLimit())
+  }
   if (hasHouseLoan) monthly += SPECIAL_ADD_DEDUCT.houseLoan
   if (rentLevel === 'low') monthly += SPECIAL_ADD_DEDUCT.rentLow
   if (rentLevel === 'mid') monthly += SPECIAL_ADD_DEDUCT.rentMid
   if (rentLevel === 'high') monthly += SPECIAL_ADD_DEDUCT.rentHigh
+  if (rentLevel === 'custom') {
+    monthly += clampMonthlyAmount(rentCustomAmount, getRentCustomMonthlyLimit())
+  }
 
   return toFixed2(monthly)
 }
@@ -351,6 +375,9 @@ module.exports = {
   INSURE_RATES,
   toFixed2,
   getNonNegative,
+  getElderCustomMonthlyLimit,
+  getRentCustomMonthlyLimit,
+  clampMonthlyAmount,
   calcMonthlyInsureDetail,
   calcSpecialAddMonthly,
   calcSpecialAddAnnual,
