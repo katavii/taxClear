@@ -1,7 +1,9 @@
 {
   "navigationStyle": "custom",
   "navigationBarTextStyle": "white",
-  "navigationBarTitleText": "工资薪金计算",
+  "navigationBarTitleText": "个税计算器-工资薪金",
+  "enableShareAppMessage": true,
+  "enableShareTimeline": true,
   "usingComponents": {
     "immersive-header": "/components/immersive-header/index",
     "van-stepper": "@vant/weapp/stepper/index",

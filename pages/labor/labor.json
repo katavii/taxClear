@@ -1,3 +1,5 @@
 {
-  "navigationBarTitleText": "劳务报酬计算"
+  "navigationBarTitleText": "个税计算器-劳务报酬",
+  "enableShareAppMessage": true,
+  "enableShareTimeline": true
 }

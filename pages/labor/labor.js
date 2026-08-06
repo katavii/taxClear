@@ -50,4 +50,17 @@ Page({
   onReset() {
     this.setData({ laborIncome: '', result: null, showResult: false })
   },
+
+  onShareAppMessage() {
+    return {
+      title: '个税计算器 - 劳务报酬个税测算',
+      path: '/pages/labor/labor',
+    }
+  },
+
+  onShareTimeline() {
+    return {
+      title: '个税计算器 - 劳务报酬个税测算',
+    }
+  },
 })

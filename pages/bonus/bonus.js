@@ -41,4 +41,17 @@ Page({
       showResult: false,
     })
   },
+
+  onShareAppMessage() {
+    return {
+      title: '个税计算器 - 年终奖个税测算',
+      path: '/pages/bonus/bonus',
+    }
+  },
+
+  onShareTimeline() {
+    return {
+      title: '个税计算器 - 年终奖个税测算',
+    }
+  },
 })

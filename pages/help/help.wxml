@@ -1,5 +1,16 @@
 <view class="container tab-page">
-  <view class="page-title">帮助中心</view>
+  <view class="page-title">个税计算器 · 帮助中心</view>
+  <view class="seo-intro">个税计算器说明、个人所得税税率表与专项附加扣除标准，测算结果仅供参考。</view>
+
+  <view class="card">
+    <view class="section-title">常见问题</view>
+    <view class="faq-list">
+      <view class="faq-item" wx:for="{{faqList}}" wx:key="q">
+        <view class="faq-q">{{item.q}}</view>
+        <view class="faq-a">{{item.a}}</view>
+      </view>
+    </view>
+  </view>
 
   <view class="card">
     <view class="section-title">综合所得税率表（累计预扣）</view>

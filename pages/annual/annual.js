@@ -2,8 +2,6 @@ const taxFormula = require('../../utils/taxFormula')
 const validate = require('../../utils/validate')
 const storage = require('../../utils/storage')
 
-const { INSURE_RATES } = taxFormula
-
 Page({
   data: {
     yearAllIncome: '',
@@ -93,10 +91,7 @@ Page({
   },
 
   openInsureModal() {
-    this.setData({
-      showInsureModal: true,
-      housingFundPercent: Math.round(INSURE_RATES.housingFundDefault * 100),
-    })
+    this.setData({ showInsureModal: true })
     this.updateInsureDetail()
   },
 
@@ -253,5 +248,18 @@ Page({
       result: null,
       showResult: false,
     })
+  },
+
+  onShareAppMessage() {
+    return {
+      title: '个税计算器 - 年度汇算清缴测算',
+      path: '/pages/annual/annual',
+    }
+  },
+
+  onShareTimeline() {
+    return {
+      title: '个税计算器 - 年度汇算清缴测算',
+    }
   },
 })
