@@ -33,6 +33,13 @@ page {
   letter-spacing: 0.5rpx;
 }
 
+.seo-intro {
+  margin: calc(-1 * var(--spacing-sm)) 0 var(--spacing-md);
+  font-size: 24rpx;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
 .disclaimer {
   font-size: 22rpx;
   color: var(--color-text-muted);

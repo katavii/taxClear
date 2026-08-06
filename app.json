@@ -10,7 +10,7 @@
     "pages/mine/mine"
   ],
   "window": {
-    "navigationBarTitleText": "个税速算计算器",
+    "navigationBarTitleText": "小薪个税速算",
     "navigationBarBackgroundColor": "#2563EB",
     "navigationBarTextStyle": "white",
     "backgroundColor": "#F8FAFC",

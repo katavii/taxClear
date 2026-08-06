@@ -1,4 +1,12 @@
 /* 首页特有样式 */
+.seo-intro {
+  margin: var(--spacing-sm) 0 var(--spacing-xs);
+  padding: 0 4rpx;
+  font-size: 24rpx;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
 .mode-switch {
   display: flex;
   gap: var(--spacing-sm);

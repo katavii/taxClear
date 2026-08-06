@@ -1,9 +1,11 @@
 <page-meta page-style="{{ showInsureModal || showSpecialModal ? 'overflow: hidden; height: 100%;' : '' }}" />
 <view class="page tab-page">
   <immersive-header
-    title="工资薪金所得税"
-    subtitle="综合所得 · 七级超额累进税率 3%-45%"
+    title="个税计算器"
+    subtitle="个人所得税测算 · 七级超额累进税率 3%-45%"
   />
+
+  <view class="seo-intro">个税计算器：按现行个人所得税政策，测算工资薪金、年终奖、劳务报酬与年度汇算，结果仅供参考。</view>
 
   <view class="mode-switch">
     <view

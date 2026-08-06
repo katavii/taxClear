@@ -1,3 +1,5 @@
 {
-  "navigationBarTitleText": "年终奖计算"
+  "navigationBarTitleText": "个税计算器-年终奖",
+  "enableShareAppMessage": true,
+  "enableShareTimeline": true
 }

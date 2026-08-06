@@ -4,8 +4,6 @@ const storage = require('../../utils/storage')
 const { setTabBarSelected, syncTabBarModal } = require('../../utils/tabBar')
 const { scrollToCalcResult } = require('../../utils/page')
 
-const { INSURE_RATES } = taxFormula
-
 Page({
   data: {
     calcMode: 'yearly',
@@ -142,16 +140,10 @@ Page({
   },
 
   openInsureModal() {
-    this.setData(
-      {
-        showInsureModal: true,
-        housingFundPercent: Math.round(INSURE_RATES.housingFundDefault * 100),
-      },
-      () => {
-        syncTabBarModal(this)
-        this.updateInsureDetail()
-      }
-    )
+    this.setData({ showInsureModal: true }, () => {
+      syncTabBarModal(this)
+      this.updateInsureDetail()
+    })
   },
 
   closeInsureModal() {
@@ -457,5 +449,18 @@ Page({
   goPage(e) {
     const { url } = e.currentTarget.dataset
     wx.navigateTo({ url })
+  },
+
+  onShareAppMessage() {
+    return {
+      title: '个税计算器 - 工资薪金个税测算',
+      path: '/pages/index/index',
+    }
+  },
+
+  onShareTimeline() {
+    return {
+      title: '个税计算器 - 工资薪金个税测算',
+    }
   },
 })

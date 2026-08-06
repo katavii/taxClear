@@ -1,5 +1,6 @@
 <view class="container">
-  <view class="page-title">全年一次性奖金（年终奖）</view>
+  <view class="page-title">个税计算器 · 年终奖个税</view>
+  <view class="seo-intro">用个税计算器对比年终奖单独计税与合并计税，测算个人所得税最优方案，结果仅供参考。</view>
 
   <view class="card card--flat">
     <van-cell-group border="{{false}}">

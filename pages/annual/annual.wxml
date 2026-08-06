@@ -1,8 +1,8 @@
 <page-meta page-style="{{ showInsureModal || showSpecialModal ? 'overflow: hidden; height: 100%;' : '' }}" />
 <view class="page">
   <immersive-header
-    title="年度综合所得汇算"
-    subtitle="次年 3-6 月 · 多退少补测算"
+    title="个税计算器·年度汇算"
+    subtitle="个人所得税汇算清缴 · 次年 3-6 月多退少补测算"
     show-back="{{true}}"
   />
 

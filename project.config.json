@@ -1,5 +1,5 @@
 {
-  "description": "个税速算计算器 - 微信小程序",
+  "description": "小薪个税速算 - 个人所得税测算微信小程序",
   "packOptions": {
     "ignore": [],
     "include": []
@@ -42,7 +42,9 @@
     "localPlugins": false,
     "disableUseStrict": false,
     "useCompilerPlugins": false,
-    "condition": false
+    "condition": false,
+    "swc": false,
+    "disableSWC": true
   },
   "compileType": "miniprogram",
   "libVersion": "3.5.5",
